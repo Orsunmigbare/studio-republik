@@ -1,0 +1,319 @@
+@import url('https://fonts.googleapis.com/css?family=Pacifico|Raleway|Quicksand|Lato|Major+Mono+Display');
+/* Mobile first */
+
+/* hide header-nav */
+.header-nav {
+    display: none !important;
+}
+
+#nav-toggle {
+    border-radius: 50%;
+    position: absolute;
+    top: 12px;
+    left: 8px;
+    z-index: 11;
+    display: block;
+    text-align: center;
+    font-size: 14px;
+    color: #ffffff;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    cursor: pointer;
+    background: rgba(0,0,0,0.3) url(./images/menu.png) center center no-repeat;
+    -webkit-transition: all .1s ease-in-out;
+    -moz-transition: all .1s ease-in-out;
+    -ms-transition: all .1s ease-in-out;
+    -o-transition: all .1s ease-in-out;
+    transition: all .1s ease-in-out;
+}
+#toggle-icon{
+    font-size: 3rem;
+    font-weight: bold;
+    color: white;
+}
+
+
+ 
+/* sliedout menu styles */
+.slideout-menu {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 256px;
+    min-height: 100vh;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+    z-index: 0;
+    display: none;
+  }
+  
+  .slideout-menu-left {
+    left: 0;
+  }
+  
+  .slideout-menu-right {
+    right: 0;
+  }
+  
+  .slideout-panel {
+    position: relative;
+    z-index: 1;
+    will-change: transform;
+    background-color: #FFF; /* A background-color is required */
+    min-height: 100vh;
+  }
+  
+  .slideout-open,
+  .slideout-open body,
+  .slideout-open .slideout-panel {
+    overflow: hidden;
+  }
+  
+  .slideout-open .slideout-menu {
+    display: block;
+  }
+  
+  /* slide-out menu styles */
+  #menu{
+      background-color: black;
+  }
+.side-nav-logo-cont{
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+  
+  .side-nav-logo{
+    height: 100px;
+    width: 100px;
+    align-self: center;
+    margin: auto;
+
+}
+.side-nav {
+    display: flex;
+    flex-direction: column;
+}
+  .side-nav li{
+      display: flex;
+  }
+  .side-nav .nav-link:hover, side-nav .nav-link:focus {
+    background-color: transparent !important;
+    color: white !important;
+}
+  .side-nav a{
+    color: white;
+    font-family: "Raleway", sans-serif;
+    font-size: 1.2rem;
+    letter-spacing: .2rem;
+}
+ 
+  .side-nav .nav-link::after{
+    content: '';
+    display: block;
+    width: 0;
+    height: 1px;
+    background: white;
+    margin: auto;
+    transition: width cubic-bezier(0.74,-0.29, 0, 0.99) .3s;
+} 
+.side-nav .nav-link:hover::after {
+    width: 100%;
+} 
+
+/* landing parralax styles */
+#landing-parralax{
+    height: 100vh;
+    width: 100vw;
+    position: relative;
+    background: rgba(0,0,0,0.3) url(./images/landing-parralax-bg.jpg) center center no-repeat;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+.parralax-content-container{
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0,0,0,0.6);
+    font-family: "Quicksand", sans-serif;
+}
+.parralax-content{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.intro-top-text{
+    color: white;
+    font-size: 1.3rem;
+    letter-spacing: .6rem;
+    text-align: center;
+}
+.top-text-divider{
+    color: gold;
+}
+.intro-text-heading{
+    font-size: 2.5rem;
+    color: white;
+    letter-spacing: .5rem;
+    font-family: "Major Mono Display", monospace;
+}
+.intro-text{
+    font-size: 1.7rem;
+    color: gold;
+    /* transform: translate(0, -20px); */
+}
+.intro-button{
+    color: gold;
+    border: 1px gold solid;
+    font-size: 1.5rem;
+    padding: .5rem 4rem;
+    margin-top: 15px;
+    text-align: center;
+    cursor: pointer;
+    transition: all cubic-bezier(0.74,-0.29, 0, 0.99) .5s;
+}
+.intro-button:hover {
+    color: black;
+    background-color: gold;
+    border: 1px gold solid;
+    font-weight:bold;
+}
+.typed-cursor{
+    color: gold !important;
+}
+.parralax-content>span {
+    text-align: center;
+}
+/* work section style */
+.work-section{
+    display: flex;
+    flex-direction: column;
+    padding-top: 7rem ;
+}
+.section-title{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: auto;
+
+}
+.section-title-image{
+    width: 50px;
+    height:50px;
+}
+.title-image-container{
+    width: 100px;
+    height:100px;
+    display: flex;
+    border: 2px solid black;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+.section-title-title{
+    font-size: 3rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-family: 'Quicksand', sans-serif;
+    letter-spacing: .4rem;
+    padding: .9rem 0;
+}
+.section-title-description{
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #969494;
+    font-family: 'Raleway', sans-serif;
+    letter-spacing: .3rem;
+}
+
+
+/* Desktops and laptops ----------- */
+@media only screen  and (min-width : 1224px) {
+/* hide slide-out-menu */
+#nav-toggle{
+    display: none
+}
+#menu{
+    display: none;
+}
+
+    /* nav styles */
+
+   .header-nav{
+    padding: .5rem;
+    display: flex !important;
+    border-radius: 0 !important;
+
+   
+}
+
+   .logo-nav-container {
+    width: 150rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: auto;
+    justify-content: space-around;
+}
+   .header-logo-with-text{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    /* width: 60rem */
+
+}
+
+.header-logo {
+     height: 5rem;
+     width: 5rem;
+    
+}
+.header-logo-text{
+    font-size: 1.2rem;
+    padding-left: 2rem;
+    font-family: 'Quicksand', sans-serif; 
+    letter-spacing: .6rem;
+    color: white;
+}
+.nav-container{
+    font-size: 1.3rem;
+    font-family: "Raleway", sans-serif;
+    letter-spacing: .2rem;
+}
+.nav-link {
+    color: white;
+    transition: all cubic-bezier(0.74,-0.29, 0, 0.99) .3s;
+}
+.nav-link:hover {
+    color: gold;
+    
+}
+.nav-link::after{
+    content: '';
+    display: block;
+    width: 0;
+    height: 1px;
+    background: gold;
+    margin: auto;
+    transition: width cubic-bezier(0.74,-0.29, 0, 0.99) .3s;
+}
+.nav-link:hover::after {
+    width: 100%;
+}
+.header-nav .nav-link:hover, .header-nav .nav-link:active, .header-nav .nav-link:focus{
+    background-color: transparent !important
+}
+/* landing parralax styles */
+.intro-text-heading{
+    font-size: 6rem;
+    
+}
+}
+
