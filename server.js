@@ -17,8 +17,7 @@ const router = express.Router();
 const env = process.env.NODE_ENV;
 console.log(env)
 // import config
-const configuration = require('./config')
-const config = configuration[env] 
+const config = require('./config') 
 console.log(config)
 
 
