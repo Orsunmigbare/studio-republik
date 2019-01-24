@@ -6,7 +6,8 @@ const ProjectsSchema = new Schema({
         url: String,
         category: String,
         preceedence: Number,
-        title: String
+        title: String,
+        date: Number
 })
 
-module.exports = mongoose.Model('Projects', ProjectsSchema)
+module.exports = mongoose.model('Projects', ProjectsSchema)

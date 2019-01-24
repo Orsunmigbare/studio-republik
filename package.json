@@ -3,18 +3,22 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "animejs": "^3.0.1",
     "aos": "^2.3.4",
+    "body-parser": "^1.18.3",
     "bootstrap": "4.2.1",
     "compression": "^1.7.3",
     "express": "^4.16.4",
     "jquery": "^3.3.1",
     "jquery-parallax.js": "^1.5.0",
+    "mixitup": "^3.3.1",
     "mongoose": "^5.4.3",
     "morgan": "^1.9.1",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
     "react-scripts": "2.1.3",
     "rellax": "^1.7.2",
+    "shufflejs": "^5.2.1",
     "slideout": "^1.0.1",
     "typed.js": "^2.0.9"
   },
@@ -22,7 +26,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "start-test": "concurrently \" node server.js\" \" npm start\""
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -33,5 +38,11 @@
     "not ie <= 11",
     "not op_mini all"
   ],
-  "proxy": "http://localhost:3001"
+  "proxy": "https://studio-repulbik.herokuapp.com",
+  "devDependencies": {
+    "concurrently": "^4.1.0"
+  },
+  "main": "index.js",
+  "author": "Oyekan Gbare <oyekanorisunmigbare@gmail.com>",
+  "license": "MIT"
 }

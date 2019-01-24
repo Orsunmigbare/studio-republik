@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Pacifico|Raleway|Quicksand|Lato|Major+Mono+Display');
+@import url('https://fonts.googleapis.com/css?family=Pacifico|Raleway|Quicksand|Lato|Major+Mono+Display|Comfortaa');
 /* Mobile first */
 
 /* hide header-nav */
@@ -59,7 +59,6 @@
   .slideout-panel {
     position: relative;
     z-index: 1;
-    will-change: transform;
     background-color: #FFF; /* A background-color is required */
     min-height: 100vh;
   }
@@ -151,7 +150,7 @@
 }
 .intro-top-text{
     color: white;
-    font-size: 1.3rem;
+    font-size: 1.1rem;
     letter-spacing: .6rem;
     text-align: center;
 }
@@ -195,13 +194,13 @@
 .work-section{
     display: flex;
     flex-direction: column;
-    padding-top: 7rem ;
+    padding-top: 3rem ;
 }
 .section-title{
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: auto;
+    margin: 50px auto;
 
 }
 .section-title-image{
@@ -212,7 +211,7 @@
     width: 100px;
     height:100px;
     display: flex;
-    border: 2px solid black;
+    border: 1.5px solid black;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
@@ -233,9 +232,472 @@
     letter-spacing: .3rem;
 }
 
+/* styles for filter-buttons section and filter buttons */
+.filter-wrapper{
+ display: flex;
+ flex-direction: row;
+ flex-wrap: wrap;
+ padding: 0;
+ align-items: center;
+ justify-content: center;
+}
+.filter{
+  list-style-type: none;
+  display: inline-block;
+  width: 95%;
+  margin: auto;
+  text-align: center;
+  text-transform: uppercase;
+  padding: 1.5rem;
+  margin-bottom: 1px;
+  background-color:  #f2f2f2;
+  font-size: 1.5rem;
+  letter-spacing: .3rem;
+  font-family: "Raleway", sans-serif;
+  color: #0e0e0d;
+  transition: all ease-in-out .35s;
+}
+.filter:hover{
+    background-color: black;
+    color: gold;
+    cursor: pointer;
+
+}
+/* projects section */
+.projects-container{
+    margin: 40px auto;
+}
+.project-thumb-text{
+    display: inline-block;
+    width: 100%;
+    text-decoration: none;
+    color: black;
+    margin: 0;
+    padding: 0;
+    font-family: 'Raleway',sans-serif;
+}
+.project-thumb-text:hover,.project-thumb-text:focus {
+    text-decoration: none;
+    
+}
+.project-thumb-text:hover > .project-title  {
+    color: gold;
+    background-color: black;
+    text-decoration: none;
+}
+.project-thumb-text:hover > .project-title > .project-title-title{
+    background-color: gold;
+    color: black;
+    border-color: gold;
+}
+.project-thumbnail{
+    height: 25rem;
+    width: 100%;
+}
+.project-title{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    padding: 2rem ;
+    background-color: #f2f2f2;
+    transition: all ease-in-out .25s;
+
+}
+
+.project-title-title{
+    font-size: 1.3rem;
+    letter-spacing: .1rem;
+    padding: .5rem 1.2rem;
+    font-weight: bold;
+    border: 1px solid;
+    transition: all ease-in-out .4s;
+}
+.project-title-category{
+    font-size: 1.2rem;
+    font-weight: lighter;
+    text-transform: capitalize;
+    letter-spacing: .2rem;
+    padding-top: 1rem ;
+    
+
+
+}
+.gif-loader-cont{
+    display: flex;
+}
+.gif-loader{
+    height: 30px;
+    margin: auto;
+    width: 30px;
+}
+
+/* styles for modal-popup */
+.modal-local{
+    height: 100%;
+    width: 100%;
+    position: fixed !important;
+    top:0;
+    display: flex;
+    padding: 0;
+    z-index: 105440;
+    overflow: auto;
+    background-color: #0e0e0d;
+    background-color: rgba(0,0,0,0.5);
+}
+.modal-content-local{
+    background-color: white;
+    margin: auto;
+    width: 100%;
+}
+
+.iframe{
+    width: 100%;
+    height: 200px;
+}
+
+.iframe>.ytp-title{
+    display: none !important;
+}
+/* About us section */
+.about-parralax{
+    height: 100vh;
+    width: 100vw;
+    position: relative;
+    background: rgba(0,0,0,0.3) url(./images/about-parralax-bg.jpg) center center no-repeat;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    color: white;
+    font-family: 'Raleway', sans-serif;
+    transition:  all cubic-bezier(0.74,-0.29, 0, 0.99) .3s;
+
+}
+.section-logo{
+    height: 7rem;
+    width: 7rem;
+    margin: auto;
+}
+.about-section-header{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 1rem;
+    font-family: 'Quicksand',sans-serif;
+    word-spacing: .3rem;
+    letter-spacing: .1rem;
+    text-transform: uppercase;
+}
+.about-section-header h3{
+    font-size: 1.3rem;
+    padding: 1rem;
+}
+.about-section-content{
+    font-size: 1.5rem;
+    max-width: 50rem;
+    padding: 1rem;
+    text-align: center;
+    background-color: rgba(0,0,0,0.6);
+}
+.about-section-footer a{
+    color: gold;
+    font-size: 1.3rem;
+    letter-spacing: .1rem;
+    padding: 1rem;
+    border: 1px solid gold;
+    transition:  all ease-in-out .6s;
+
+}
+.about-section-footer a:hover{
+    color: black;
+    background-color: gold;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+/* services section */
+
+.service-content{
+ max-width: 90%;
+ margin: auto;
+ margin-bottom: 10px !important;
+ overflow: hidden;
+ transition: all cubic-bezier(0.74,-0.29, 0, 0.99) .7s;
+}
+.service-content-title{
+    background-color: #f2f2f2;
+    padding: 1rem 1rem;
+    transition: all cubic-bezier(0.74,-0.29, 0, 0.99) .5s;
+}
+.service-content-title:hover {
+    background-color: black;
+    color: gold;
+    padding: 1rem 1rem;
+}
+.service-content-title h2{
+    font-size: 2rem;
+    text-align: center;
+    font-weight: lighter;
+    padding-top: .5rem;
+    font-family: 'Quicksand' , sans-serif;
+    letter-spacing: .2rem;
+}
+.service-content-title p{
+    font-size: 1rem;
+    text-align: center;
+    font-family: 'Raleway', sans-serif;
+    padding: .5rem;
+    word-spacing: .3rem;
+}
+.service-content-content{
+transition: all cubic-bezier(0.74,-0.29, 0, 0.99) .7s;
+}
+.service-content-content .title-image-container{
+    margin: auto;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+.section-content h4{
+    text-align: center;
+    font-size: 1.7rem;
+    font-family: "Quicksand", sans-serif;
+    font-weight: bold;
+    padding-top: 20px;
+}
+.section-content p{
+    font-size: 1.5rem;
+    font-family: "Raleway", sans-serif;
+}
+/* styles for contact footer */
+.contact-footer{
+    height: 100vh;
+    width: 100vw;
+    background-color: black;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+.contact-buttons div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.contact-form-button{
+    font-size: 1.3rem;
+    text-transform: uppercase;
+    color: white;
+    border: 1px solid white;
+    padding: 1rem 1.5rem;
+    transition:  all cubic-bezier(0.74,-0.29, 0, 0.99) .3s;
+    font-family: 'Quicksand', sans-serif;
+    letter-spacing: .3rem;
+    animation: float 2s ease-in-out  infinite alternate ;
+   
+}
+.contact-form-button:hover{
+    text-decoration: none;
+    color: black;
+    background-color: gold;
+    border-color: gold;
+     font-weight: bold;
+}
+.tel-num{
+    color: white;
+    font-size: 1.2rem;
+    padding: 1.5rem;
+    font-family: 'Quicksand' sans-serif;
+    letter-spacing: .2rem;
+    position: relative;
+
+}
+.tel-num:hover{
+    color: white;
+}
+.st0{fill:none;
+    stroke-width: 1;
+    stroke: #717171;
+    stroke-dasharray: 300;
+    animation: drawSvg 2s ease-in-out infinite alternate-reverse;
+}
+.st1{font-family:'Comfortaa', sans-serif;}
+.st2{font-size:72px;}
+.st3{letter-spacing:12.1;}
+
+@keyframes drawSvg{
+    0%{
+        stroke-dashoffset: 0;
+    }
+    100%{
+        stroke-dashoffset: 320;
+    }
+}
+@keyframes float{
+    0%{
+        opacity: .6;
+    }
+    50%{
+        opacity: 1;
+    }
+    100%{
+        opacity: .6;
+    }
+}
+
+/* Large-mobile-phones */
+@media only screen  and (min-width : 425px) {
+/* styles for filter-buttons section and filter buttons */
+.filter{
+    width: 49.8%;
+    margin-left: 0;
+}
+ /* projects section */
+ .project-thumb-text{
+   width: 50%;
+
+}
+.project-thumbnail{
+    height: 25rem;
+}
+/* modal pop-up */
+.iframe{
+    width: 100%;
+    height: 280px;
+}
+}
+
+
+/* Tablets ----------- */
+@media only screen  and (min-width : 768px) {
+    /* projects section */
+
+    /* styles for filter-buttons section and filter buttons */
+    .filter-wrapper{
+        width: max-content;
+        margin: .5rem auto ;
+    }
+    .filter{
+        font-size: 1.2rem;
+        padding: 1.2rem ;
+        border-radius: 4px;
+        letter-spacing: .1rem;
+        width: fit-content;
+        margin: auto .7rem;
+        font-family: 'Raleway', sans-serif;
+    }
+    /* projects section */
+     .project-thumbnail{
+         height: 25rem;
+     }
+     /* modal pop-up */
+     iframe{
+        width: 100%;
+        height: 350px !important;
+    }
+    .modal-content-local{
+        background-color: white;
+        margin: auto;
+        width: 80% !important;
+    }
+    /* services section */
+    .service-content-content{
+        display: flex;
+        flex-direction: row;
+       
+    }
+    .service-content-content .title-image-container{
+        padding: 30px;
+        margin: auto;
+        margin-right: 30px;
+    }
+}
+
+
+
+
+/* Mini Laptops ----------- */
+@media only screen  and (min-width : 1008px) {
+/* projects section */
+.project-thumb-text{
+    width: 33.3%;
+ 
+ }
+ .project-thumbnail{
+     height: 25rem;
+ }
+ /* modal pop-up */
+ iframe{
+    width: 100%;
+    height: 550px !important;
+}
+.modal-content-local{
+    background-color: white;
+    margin: auto;
+    width: 80% !important;
+}
+ /* services section */
+ .service-content{
+    max-width: 70%;
+    margin: auto;
+   }
+}
+
+
+
+
+/* Large Laptops ----------- */
+@media only screen  and (min-width : 1171px) {
+    /* projects section */
+    .project-thumb-text{
+        width: 25%;
+     
+     }
+     .project-thumbnail{
+         height: 22rem;
+     }
+     /* modal pop-up */
+ iframe{
+    width: 100%;
+    height: 550px !important;
+}
+.modal-content-local{
+    background-color: white;
+    margin: auto;
+    width: 80% !important;
+}
+ /* services section */
+ 
+
+}
+
+/* 4k screens ----------- */
+@media only screen  and (min-width : 2257px) {
+
+/* projects section */
+.project-thumb-text{
+    width: 20%;
+ 
+ }
+ .project-thumbnail{
+     height: 30rem;
+ }
+ /* modal pop-up */
+ iframe{
+    width: 80%;
+    height: 1150px !important;
+}
+.modal-content-local{
+    background-color: white;
+    margin: auto;
+    width: 80% !important;
+}
+}
+
+
 
 /* Desktops and laptops ----------- */
 @media only screen  and (min-width : 1224px) {
+
 /* hide slide-out-menu */
 #nav-toggle{
     display: none
@@ -250,7 +712,7 @@
     padding: .5rem;
     display: flex !important;
     border-radius: 0 !important;
-
+    transition: all all cubic-bezier(0.74,-0.29, 0, 0.99) .3s;
    
 }
 
@@ -276,14 +738,14 @@
     
 }
 .header-logo-text{
-    font-size: 1.2rem;
+    font-size: 1rem;
     padding-left: 2rem;
     font-family: 'Quicksand', sans-serif; 
     letter-spacing: .6rem;
     color: white;
 }
 .nav-container{
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     font-family: "Raleway", sans-serif;
     letter-spacing: .2rem;
 }
@@ -309,6 +771,41 @@
 }
 .header-nav .nav-link:hover, .header-nav .nav-link:active, .header-nav .nav-link:focus{
     background-color: transparent !important
+}
+/* header nav onScrolled down */
+.nav-active{
+    background-color:  #f2f2f2 !important;
+    padding: .1rem;
+}
+.nav-active .nav-link{
+    color: #3b3051;
+    font-size: 1.1rem;
+}
+.nav-active .nav-link:hover {
+    color: black;
+    font-weight: bold;
+    
+}
+.nav-active .nav-link:hover::after {
+    width: 100%;
+    /* background-color: #3b3051 !important; */
+}
+.nav-active .nav-link::after{
+    content: '';
+    display: block;
+    width: 0;
+    height: 1px;
+    background: #3b3051;
+    margin: auto;
+    transition: width cubic-bezier(0.74,-0.29, 0, 0.99) .3s;
+}
+.nav-active .header-logo{
+    height: 3rem;
+    width: 3rem;
+}
+.nav-active .header-logo-text{
+    font-size: 1rem;
+    color: #3b3051;
 }
 /* landing parralax styles */
 .intro-text-heading{

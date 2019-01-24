@@ -23,4 +23,9 @@ code {
     html {
       font-size: 10px !important;
     }
+  }
+    @media only screen and (min-width : 2257px){
+      html {
+        font-size: 12px !important;
+      }
     }
