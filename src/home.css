@@ -417,7 +417,9 @@
 }
 
 /* services section */
-
+.service-cont{
+    margin: 50px auto;
+}
 .service-content{
  max-width: 90%;
  margin: auto;

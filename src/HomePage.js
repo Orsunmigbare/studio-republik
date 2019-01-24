@@ -198,9 +198,8 @@ class WorkSection extends Component{
             'Content-Type': 'application/json',
             'Accept': 'application/json'
         })
-        .then(response => {  return response.text(); })
-        .then(response => {  console.log(response) })
-        // .then(response=>{this.setState({projectData: response, filters: this._setFilters(response)});})
+        .then(response => { return response.json();})
+        .then(response=>{this.setState({projectData: response, filters: this._setFilters(response)});})
         .catch(err=> {throw new Error(err.message)})
 
     }
@@ -386,7 +385,7 @@ class Modal extends Component{
 class Services extends Component{
 render(){
     return(
-        <div className=''>
+        <div className='service-cont'>
             <div className='work-section'>
                 <div className='section-title col-md-8 col-md-offset-2 text-center'
                 data-aos="fade-up"
