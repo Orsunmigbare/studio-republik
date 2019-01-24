@@ -194,9 +194,13 @@ class WorkSection extends Component{
 
     componentDidMount(){
 // make api call for projects 
-        fetch('api/projects')
-        .then(response => {return response.json()})
-        .then(response=>{this.setState({projectData: response, filters: this._setFilters(response)});})
+        fetch('api/projects',{
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        })
+        .then(response => {  return response.text(); })
+        .then(response => {  console.log(response) })
+        // .then(response=>{this.setState({projectData: response, filters: this._setFilters(response)});})
         .catch(err=> {throw new Error(err.message)})
 
     }
