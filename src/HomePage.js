@@ -197,7 +197,7 @@ class WorkSection extends Component{
         fetch('api/projects')
         .then(response => {return response.json()})
         .then(response=>{this.setState({projectData: response, filters: this._setFilters(response)});})
-        .catch(err=> {throw new Error('An error occured. Please check your internet connection')})
+        .catch(err=> {throw new Error(err.message)})
 
     }
 componentDidUpdate(){
