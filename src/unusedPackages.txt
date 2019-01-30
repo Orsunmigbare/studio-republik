@@ -1,2 +1,3 @@
-jquery
+jquery x
 semanti-ui
+anime.js

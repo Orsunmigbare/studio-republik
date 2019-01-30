@@ -7,7 +7,7 @@ const morgan = require("morgan");
 const path = require('path')
 
 // import serving functions
-const serverFunctions = require('./serverFunctions')
+const serverFunctions = require('./backendFunctions/serverFunctions')
 
 
 
@@ -68,6 +68,11 @@ if(!dev){
         let response = await serverFunctions.saveProject(req.body)
          res.send(response)
     })
+    // send Mail Request
+    router.post('/send-message', async (req,res)=>{
+        let response = await serverFunctions.sendMail(req.body)
+        res.send(response)
+    })
 
 }
 
@@ -84,6 +89,11 @@ if(dev){
     router.post('/save-project', async (req,res)=>{
         let response = await serverFunctions.saveProject(req.body)
          res.send(response)
+    })
+     // send Mail Request
+     router.post('/send-message', async (req,res)=>{
+        let response = await serverFunctions.sendMail(req.body)
+        res.send(response)
     })
 }
 

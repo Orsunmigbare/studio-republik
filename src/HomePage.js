@@ -17,10 +17,12 @@ import 'aos/dist/aos.css';
 import mixitup from 'mixitup' 
 // smoothScroll
 import smoothScroll from 'smoothscroll'
-// waypoints
+// in-viewport
+
 
 import  logo from './images/car.png';
 import workIcon from './images/work-icon.png'
+
 
 // /import testThumbnail from './images/project-thumbails/mai-ajiva.jpg'
 class HomePage extends Component{
@@ -89,19 +91,16 @@ class HomePage extends Component{
         // 
         var sections = document.querySelectorAll('.scrollSection') 
         // check if an element is in viewport
-        var isInViewport = function (elem) {
-            var bounding = elem.getBoundingClientRect();
-            return (
-                bounding.top >= 0 &&
-                bounding.left >= 0 &&
-                bounding.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-                bounding.right <= (window.innerWidth || document.documentElement.clientWidth)
-            );
-        };
+        // The checker
+        var inViewport = require('in-viewport');
        window.addEventListener('scroll',()=>{ //add active class to corresponding nav if in view
            sections.forEach((section)=>{
-               if(isInViewport(section)) navActiveToggler(section)
-           })
+               if(inViewport(section)) navActiveToggler(section)
+           }
+           )
+           if(window.scrollY < 50){
+            navActiveToggler(sections[0])
+           }
        })
        // end of this
     }
@@ -337,6 +336,7 @@ _showModal= (bool,url)=>{
         )
     }
 }
+
 // Component for about Section
 class AboutSection extends Component{
     render(){
@@ -362,8 +362,19 @@ class AboutSection extends Component{
         )
     }
 }
+
 // Component for Contat Footer
 class ContactFooter extends Component{
+    state={
+        showContactForm: false
+    }
+    _toShowContactForm = (option)=>{
+        if(option){
+            this.setState({showContactForm: true})
+        }else {
+            this.setState({showContactForm: false})
+        }
+    }
  render(){
         return(
             <div className='contact-footer scrollSection' data-navreferrer='contact' id='contact'>
@@ -371,12 +382,13 @@ class ContactFooter extends Component{
                 <text transform="matrix(0.99 0 0 1 22.6216 112)" class="st0 st1 st2 st3">STUDIO REPUBLIK</text>
                 </svg>
                 <div className='contact-buttons'>
-               <div> <a href='#contact-form' class='contact-form-button'>  Open Contact Form</a> </div>
+               <div> <a href='#contact-form' class='contact-form-button' onClick={()=>{ this._toShowContactForm(true)}}>  Open Contact Form</a> </div>
                <div> <span className='fas fa-phone contact-icon'></span><a href="tel:+(234)9044343453" class='tel-num'> 090-4433-434e</a> </div>
                <div> <span className='fas fa-envelope contact-icon'></span><a href="mail:studiorepublik@yahoo.com" class='tel-num'>studio-republik@yahoo.com</a> </div>
                <div className='social-icons-div'> <span className='fab fa-instagram'></span> <span className='fab fa-twitter'></span> <span className='fab fa-facebook'></span> </div>
                  </div>
                  <footer> <a><span id='footer-typed'></span> by Abrand &copy;{new Date().getFullYear()}</a></footer>
+                 <ContactForm toShowContactForm ={this._toShowContactForm} showContactForm={this.state.showContactForm}/>
             </div>
             
             
@@ -384,6 +396,235 @@ class ContactFooter extends Component{
         )
     }
 }
+
+// class for contact form
+class ContactForm extends Component{
+    state = {
+        isFormValid: false,         //is form valid?
+        formSubmitState: null,      //state of form submission `sending`,`sent`,`error`
+        sentOnce: false,
+        formDetails : {
+            // form details
+            name: {
+                value: null,
+                element: 'inputName'
+            },
+            email:{
+                value: null,
+                element: 'inputEmail'
+            },
+            phone: {
+                value: null,
+                element: 'inputPhone'
+            },
+            message: {
+                value: null,
+                element: 'contactMessage'
+            }
+        }
+    }
+
+    // fuction to make api post request to send message from contact form
+    _sendMessageRequest=  async()=>{
+        await this._validateForm(); // first validate from
+
+        if(!this.state.isFormValid) return //return if form been submitted once
+
+        let formDetails = this.state.formDetails
+        let messageDetails={}
+        Object.keys(formDetails).forEach((key)=>{
+            messageDetails[key] = formDetails[key].value
+        })
+
+        await this.setState({formSubmitState: 'sending'}) //set form submission state
+        
+        return fetch('api/send-message', {                //send fetch request
+            method: "POST", // *GET, POST, PUT, DELETE, etc.
+            mode: "cors", // no-cors, cors, *same-origin
+            cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: "same-origin", // include, *same-origin, omit
+            headers: {
+                "Content-Type": "application/json",
+                // "Content-Type": "application/x-www-form-urlencoded",
+            },
+            redirect: "follow", // manual, *follow, error
+            referrer: "no-referrer", // no-referrer, *client
+            body: JSON.stringify(messageDetails), // body data type must match "Content-Type" header
+        }).then(response => response.json()) //convert response to json
+
+        .then((response)=>{ 
+            response? this.setState({formSubmitState:'sent', sentOnce: true}) //set form submission state
+            :this.setState({formSubmitState:'error'});
+            console.log(`form submit state is ${this.state.formSubmitState}`) 
+        })
+
+        .catch((err)=>this.setState({formSubmitState:'error'})) //set form submission state
+        console.log(`form submit state is ${this.state.formSubmitState}`)
+    }
+
+    // function to setState for formData 
+    _setInputValue = (titleKey, value)=>{
+            var tempFormDetalis = this.state.formDetails       //copy of state's formdetails `avoid mutation`
+            tempFormDetalis[titleKey].value = value;            //from titlekey argument, set value of formdeetails key
+            this.setState({formDetails: tempFormDetalis})       //set new state
+    }
+   
+   // finction to validate form
+    _validateForm(){
+        var fromDetails = this.state.formDetails;           //copy of state's formdetails `avoid mutation`
+        var isValid = true
+        // function to check and add a class of .is-invalid to elements if invalid or .is-valid if otherwise
+        var toggleValidClass = (key,bool)=>{
+            if(!bool){
+                document.getElementById(fromDetails[key].element).classList.add('is-invalid')
+                isValid = isValid && false
+            }else{
+                document.getElementById(fromDetails[key].element).classList.remove('is-invalid')
+                document.getElementById(fromDetails[key].element).classList.add('is-valid')
+                isValid = isValid && true
+            }
+        }
+        var checkAndValidate = (key)=>{
+            // function to check and validate all keys of the formData in state
+           
+            switch(key){
+                case 'name' :
+                case 'message':
+                if(fromDetails[key].value === null){
+                   toggleValidClass(key,false) // add is-invalid class
+                   
+                }else{
+                    toggleValidClass(key,true) // add is-valid class
+                    
+                }
+                break;
+                case 'email': if(!fromDetails[key].value || !fromDetails[key].value.match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)){
+                   toggleValidClass(key,false)
+                }else{
+                    toggleValidClass(key,true)
+                }
+                break;
+                case 'phone': if(!fromDetails[key].value || !fromDetails[key].value.match(/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/g)){
+                   toggleValidClass(key,false)
+                }else{
+                    toggleValidClass(key,true)
+                }
+                default: return;
+            }
+        }
+        Object.keys(fromDetails).forEach((key)=>{
+            checkAndValidate(key) //  validate all keys of the formData Object
+        })
+        this.setState({isFormValid: isValid})
+        return isValid
+        
+    }
+ render(){
+     return(
+         <div className='contact-form-cont' style={{display: this.props.showContactForm? 'flex': 'none'}} >
+        <form className="contact-form">
+            <div className="form-group">
+            <label for="inputName">Name</label>
+            <input type="text" className="form-control" id="inputName" placeholder="Your Name" onChange={(event)=>{this._setInputValue('name',event.target.value); }}/>
+            <div class="valid-feedback">
+                Looks good!
+            </div>
+            <div className="invalid-feedback">
+            Please Enter Your Name
+            </div>
+        </div>
+        
+        
+            <div className="form-group">
+            <label for="inputEmail">Email</label>
+            <input type="email" className="form-control" id="inputEmail" placeholder="Your Email" onChange={(event)=>{this._setInputValue('email',event.target.value); }} />
+        `   <div class="valid-feedback">
+                Looks good!
+            </div>
+        <div className="invalid-feedback">
+           Kindly enter a valid email
+        </div>
+        </div>
+        
+        
+            <div className="form-group ">
+            <label for="inputPhone">Phone No</label>
+            <input type="text" className="form-control" id="inputPhone" placeholder="Your Phone" onChange={(event)=>{this._setInputValue('phone',event.target.value); }} />
+            <div class="valid-feedback">
+                Looks good!
+            </div>
+            <div className="invalid-feedback">
+            Kindly Input A Valid Phone Number
+        </div>
+        </div>
+        
+        
+            <div className="form-group ">
+            <label for="contactMessage">Message</label>
+            <textarea className="form-control" id="contactMessage" rows="6" placeholder='Leave a message here' onChange={(event)=>{this._setInputValue('message',event.target.value); }}></textarea>
+            <div class="valid-feedback">
+                Looks good!
+            </div>
+            <div className="invalid-feedback">
+            Please message box cant be empty
+        </div>
+        </div>
+        <div className='control-buttons'>
+        <button className="btn btn-primary submit" type="submit" onClick={async (e)=>{e.preventDefault(); this._sendMessageRequest()}}  disabled={(this.state.formSubmitState==='sending'||this.state.formSubmitState==='sent')?true: false}>Submit</button>
+        <div className='feedbackCont'>
+            {
+               this.state.formSubmitState === 'sending'? <><img className='feedbackIcon' src={require('./images/loader.gif')}/> <em className='feedbackText'>Sending</em></> : null
+            }
+            {
+               this.state.formSubmitState === 'sent'? <><i className="fas fa-check-circle feedbackIcon" style={{color: '#4ab361'}}></i> <em className='feedbackText'>Message Sent Succesfully</em></> : null
+            }
+            {
+               this.state.formSubmitState === 'error'? <><i class="fas fa-exclamation-circle feedbackIcon" style={{color: '#d84409'}}></i> <em className='feedbackText'>OOps! an error occured.. please try again</em></> : null
+            }
+        </div>
+        <button className="btn btn-primary cancel" type="cancel" onClick={()=>{this.props.toShowContactForm(false)}}>Cancel</button>
+        </div>
+        </form>
+         </div>
+     )
+ }
+}
+// component for our services
+class Services extends Component{
+    render(){
+        return(
+            <div className='service-cont scrollSection' data-navreferrer='services' id='services'>
+                <div className='work-section'>
+                    <div className='section-title col-md-8 col-md-offset-2 text-center'
+                    data-aos="fade-up"
+                    data-aos-offset="100"
+                    data-aos-anchor-placement="top-bottom"
+                    data-aos-delay="500"
+                    data-aos-duration = '1000'
+                    data-aos-easing="ease-in-out"
+                    > 
+                    
+                        <div className='title-image-container'>
+                        <img src={workIcon} className='section-title-image' alt="work-Icon"/>
+                        </div>
+                        <span className='section-title-title'>  Our Services </span>
+                        <p className='section-title-description'> Bring Your Visual Imprint To New Levels</p>
+                    </div>
+            </div>
+            <ServiceComponent
+            animation ={'slide-left'}
+            />
+            <ServiceComponent
+            animation ={'slide-right'}
+            />
+            <ServiceComponent
+            animation ={'slide-left'}
+            />
+            </div>
+        )
+    }
+    }
+
 // Component for Filters
 class FilterButton extends Component{
 
@@ -393,6 +634,7 @@ class FilterButton extends Component{
         )
     }
 }
+
 // Component for project thumbailsWithText
 class ProjectThumbText extends Component{
     render(){
@@ -409,7 +651,8 @@ class ProjectThumbText extends Component{
                             </a>
         )
         }
-    }
+}
+
 //Component for PopUP Modal
 class Modal extends Component{
     render(){
@@ -423,41 +666,7 @@ class Modal extends Component{
         )
     }
 }
-// component for our services
-class Services extends Component{
-render(){
-    return(
-        <div className='service-cont scrollSection' data-navreferrer='services' id='services'>
-            <div className='work-section'>
-                <div className='section-title col-md-8 col-md-offset-2 text-center'
-                data-aos="fade-up"
-                data-aos-offset="100"
-                data-aos-anchor-placement="top-bottom"
-                data-aos-delay="500"
-                data-aos-duration = '1000'
-                data-aos-easing="ease-in-out"
-                > 
-                
-                    <div className='title-image-container'>
-                    <img src={workIcon} className='section-title-image' alt="work-Icon"/>
-                    </div>
-                    <span className='section-title-title'>  Our Services </span>
-                    <p className='section-title-description'> Bring Your Visual Imprint To New Levels</p>
-                </div>
-        </div>
-        <ServiceComponent
-        animation ={'slide-left'}
-        />
-        <ServiceComponent
-        animation ={'slide-right'}
-        />
-        <ServiceComponent
-        animation ={'slide-left'}
-        />
-        </div>
-    )
-}
-}
+
 // class for individual  services component 
 class ServiceComponent extends Component{
     state ={
@@ -495,4 +704,6 @@ class ServiceComponent extends Component{
         )
     }
 }
+
+
 export default HomePage

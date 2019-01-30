@@ -1,7 +1,5 @@
-const projectModel = require('./models/projects')
-
-
-
+const projectModel = require('../models/projects');
+const sendMail = require('./sendMail')
 module.exports = {
     
     saveProject: async (req)=>{
@@ -26,7 +24,12 @@ module.exports = {
         .then(projects=>{result = projects})
         .catch(err=>{console.log(err); result = null})
         return result
-    }
+    },
+
+    sendMail: async (req)=>{
+        var result = await sendMail(req.name, req.email,req.phone, req.message)
+        return result
+    } 
 
 
 }
