@@ -6,9 +6,9 @@
     display: none !important;
 }
 
-#nav-toggle {
+.nav-open {
     border-radius: 50%;
-    position: absolute;
+    position: fixed;
     top: 12px;
     left: 8px;
     z-index: 11;
@@ -26,6 +26,18 @@
     -ms-transition: all .1s ease-in-out;
     -o-transition: all .1s ease-in-out;
     transition: all .1s ease-in-out;
+}
+.nav-close{
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 2.2rem;
+    font-family: cursive;
+    padding: .5rem;
+}
+.nav-close span{
+    color: #e3dede;
+   
 }
 #toggle-icon{
     font-size: 3rem;
@@ -420,6 +432,7 @@
 /* services section */
 .service-cont{
     margin: 50px auto;
+    overflow-x: hidden;
 }
 .service-content{
  max-width: 90%;

@@ -32,12 +32,16 @@ class HomePage extends Component{
             'panel': document.getElementById('panel'),
             'menu': document.getElementById('menu'),
             'padding': 256,
-            'tolerance': 70
+            'tolerance': 70,
+            'touch': false
           });
-        
-          document.getElementById('nav-toggle').addEventListener('click', function() {
-            slideout.toggle();
-          });
+          console.log(slideout)
+          var navTogglers= document.querySelectorAll('.nav-toggle')
+          navTogglers.forEach((toggler)=>{
+              toggler.addEventListener('click', function() {
+                slideout.toggle();
+              });
+          })
         //   configure rellax
         const rellax =new Rellax('.rellax')
         // configure typed
@@ -155,7 +159,7 @@ class TopNav extends Component{
                    </div>
                    </div>
             </nav>    
-            <div id='nav-toggle' href='#'> </div>  
+            <div className='nav-toggle nav-open' c href='#'> </div>  
             
             </>
             )
@@ -168,6 +172,9 @@ render(){
         <nav id='menu' >
              <div className='side-nav-logo-cont py-5'> 
              <img src={logo} className='side-nav-logo' />
+             </div>
+             <div className='nav-close nav-toggle'>
+                <span>X</span>
              </div>
             <ul className="nav side-nav">
                         <li className="nav-item">
