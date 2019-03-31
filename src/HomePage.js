@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './home.css'
+import './css/home.css'
 // import Javascript libraries
 // botStrap
 import  'bootstrap/dist/css/bootstrap.css';
@@ -23,6 +23,10 @@ import smoothScroll from 'smoothscroll'
 import  logo from './images/car.png';
 import workIcon from './images/work-icon.png'
 
+// Fetch
+import Fetch from './Fetch'
+import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
+
 
 // /import testThumbnail from './images/project-thumbails/mai-ajiva.jpg'
 class HomePage extends Component{
@@ -35,7 +39,7 @@ class HomePage extends Component{
             'tolerance': 70,
             'touch': false
           });
-          console.log(slideout)
+         
           var navTogglers= document.querySelectorAll('.nav-toggle')
           navTogglers.forEach((toggler)=>{
               toggler.addEventListener('click', function() {
@@ -159,7 +163,7 @@ class TopNav extends Component{
                    </div>
                    </div>
             </nav>    
-            <div className='nav-toggle nav-open' c href='#'> </div>  
+            <div className='nav-toggle nav-open'  href='#'> </div>  
             
             </>
             )
@@ -227,48 +231,120 @@ class LandingParralax extends Component{
 //Component  For Our Work Section
 class WorkSection extends Component{
     state =  {
-        projectData: null,
-        projectFilters: [],
+        projectData: [],
         componentMounted: false,
         modalUrl:'',
         showModal: false
     }
 
     componentDidMount(){
-// make api call for projects 
-        fetch('api/projects',{
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
+        // make api call for projects 
+        // fetch('api/projects',{
+        //     'Content-Type': 'application/json',
+        //     'Accept': 'application/json'
+        // })
+        // .then(response => { return response.json();})
+        // .then(response=>{this.setState({projectData: response, filters: this._setFilters(response)});})
+        // .catch(err=> {throw new Error(err.message)})
+
+        Fetch.getPlayLists({
+            part: "snippet,contentDetails",
+            channelId: "UCc9LSl5h_Le75TBCbauHuuQ",
+            key: "AIzaSyDTt380COvIW1o0lGpc4d4WbnN-5MZFkNg",
+            maxResults : 50
         })
-        .then(response => { return response.json();})
-        .then(response=>{this.setState({projectData: response, filters: this._setFilters(response)});})
-        .catch(err=> {throw new Error(err.message)})
+        .then(async response => {
+           await this._setFilters(response.items)
+           const {filters} = this.state
+           let pendingPromises = []
+          for (let filter of filters){
+           pendingPromises.push(this._promiseForAsync(filter))
+           }
+         Promise.all(pendingPromises).then(()=>{ this.setState({isDataReady: true})})
+         
+            
+        })
+        .catch(error => console.log(error))
+
+
+
+
+
 
     }
 componentDidUpdate(){
     // 
-    mixitup('.projects-container')
-    console.log(this.state)
+    
+   if (this.state.isDataReady)   mixitup('.projects-container');
+    
 }
 componentWillUnmount(){
     
 }
     // function to select get filters from available api response.category and set to state
-_setFilters =  (projects)=>{
-    let filters = [];
-    projects.forEach(element=>{
-        if(filters.indexOf(element.category) === -1){
-            filters.push(element.category)
-        }
-    })
-    return filters
+_setFilters =  (items)=>{
+    const categories = [];
+    console.log(items)
     
+    items.forEach(item =>{ 
+    //     let dupFound
+    // categories.forEach(catItem=>{
+    //         if(!catItem) return
+    //         console.log(catItem)
+    //         if(catItem.name === item.snippet.title)  dupFound = true
+    // })
+    // if(dupFound) return
+        const itemObj = {}
+        itemObj.name = item.snippet.title;
+        itemObj.id = item.id
+        itemObj.dataFilter = item.snippet.title.toLowerCase().split(' ').join('-').replace('/','-')
+        categories.push(itemObj);
+      
+    })
+    this.setState({filters : categories})
 }
+_promiseForAsync = (filter)=>{
+
+    return new Promise((resolve,reject)=>{
+           Fetch.getPlayListsItems({
+            part: "snippet,contentDetails",  
+            playlistId: filter.id,
+            key: "AIzaSyDTt380COvIW1o0lGpc4d4WbnN-5MZFkNg",
+            maxResults: 50
+        })
+        .then(async res =>{
+            let ProjectDataCont = [ ]
+            res.items.forEach(item=>{
+                let itemDetails = {}
+                itemDetails.title = item.snippet.title;
+                itemDetails.category  = filter.name;
+                 itemDetails.thumbnailUri = item.snippet.thumbnails.maxres ? item.snippet.thumbnails.maxres.url: item.snippet.thumbnails.medium.url ;
+                itemDetails._id = item.contentDetails.videoId;
+                itemDetails.dataFilter = filter.dataFilter
+                itemDetails.url = `https://www.youtube.com/embed/${item.contentDetails.videoId}`
+                ProjectDataCont.push(itemDetails)
+                  
+            })
+            let {projectData} = this.state;
+            ProjectDataCont.forEach(data =>{
+                 projectData.push(data)
+            })
+            
+           await this.setState({projectData : projectData})
+           resolve()
+        })
+        .catch(err=>{
+            console.log(err);
+            reject()
+        })
+    })
+}
+
 _showModal= (bool,url)=>{
     if(bool){
         this.setState({
             showModal: true,
-            modalUrl: `${url}?vq=hd1` 
+            modalUrl: `${url}?vq=hd1`
         })
     }else{
         this.setState({
@@ -307,8 +383,9 @@ _showModal= (bool,url)=>{
                         {/* set filter buttons from state*/}
                          {this.state.filters? this.state.filters.map(filter=>(
                              <FilterButton
-                             title= {filter}
-                             dataFilter = {`.${filter}`}
+                             title= {filter.name}
+                             key= {filter.id}
+                             dataFilter = {`.${filter.dataFilter}`}
                              />
                          )): null}
                          
@@ -318,11 +395,12 @@ _showModal= (bool,url)=>{
                     > 
                         {/* render thumbnails from state*/}
                        {    
-                            this.state.projectData ? this.state.projectData.map(project=>(
+                            this.state.projectData.length ? this.state.projectData.map(project=>(
                                     <ProjectThumbText
-                                        name = {project.name}
+                                        thumbnailUri = {project.thumbnailUri}
                                         title = {project.title}
                                         category = {project.category}
+                                        dataFilter = {project.dataFilter}
                                         key={project._id}
                                         url={project.url}
                                         showModal = {this._showModal}
@@ -462,11 +540,11 @@ class ContactForm extends Component{
         .then((response)=>{ 
             response? this.setState({formSubmitState:'sent', sentOnce: true}) //set form submission state
             :this.setState({formSubmitState:'error'});
-            console.log(`form submit state is ${this.state.formSubmitState}`) 
+           
         })
 
         .catch((err)=>this.setState({formSubmitState:'error'})) //set form submission state
-        console.log(`form submit state is ${this.state.formSubmitState}`)
+       
     }
 
     // function to setState for formData 
@@ -647,10 +725,10 @@ class ProjectThumbText extends Component{
     render(){
         return(
             <a  href='#see' 
-            className= {`project-thumb-text mix ${this.props.category}`}
+            className= {`project-thumb-text mix ${this.props.dataFilter}`}
             onClick={()=>{this.props.showModal(true,this.props.url)}}
             >
-                                <img src={require(`./images/project-thumbails/${this.props.name}.jpg`)} className='project-thumbnail'/>
+                                <img src={this.props.thumbnailUri} className='project-thumbnail'/>
                                 <div className='project-title'>
                                      <span className='project-title-title'> {this.props.title}</span>
                                      <span className='project-title-category'> {this.props.category}</span>
@@ -667,7 +745,9 @@ class Modal extends Component{
                 <div class='modal-local' onClick={()=>{this.props.showModal(false)}}>
                       <div class='modal-content-local'>
                       <iframe  className='iframe'src={this.props.url} frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+                     < img src={require('./images/video-loader.gif')}/>
                       </iframe>
+                      
                       </div>
                 </div>
         )
