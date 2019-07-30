@@ -25,7 +25,8 @@ import workIcon from './images/work-icon.png'
 
 // Fetch
 import Fetch from './Fetch'
-import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
+
+// import Mailer from './mailer'
 
 
 // /import testThumbnail from './images/project-thumbails/mai-ajiva.jpg'
@@ -273,8 +274,6 @@ class WorkSection extends Component{
 
     }
 componentDidUpdate(){
-    // 
-    
    if (this.state.isDataReady)   mixitup('.projects-container');
     
 }
@@ -512,38 +511,47 @@ class ContactForm extends Component{
     // fuction to make api post request to send message from contact form
     _sendMessageRequest=  async()=>{
         await this._validateForm(); // first validate from
-
         if(!this.state.isFormValid) return //return if form been submitted once
+        let contactForm = this.contactForm
+        contactForm.submit()
+        // let formDetails = this.state.formDetails
+        // let messageDetails={}
+        // Object.keys(formDetails).forEach((key)=>{
+        //     messageDetails[key] = formDetails[key].value
+        // })
 
-        let formDetails = this.state.formDetails
-        let messageDetails={}
-        Object.keys(formDetails).forEach((key)=>{
-            messageDetails[key] = formDetails[key].value
-        })
-
-        await this.setState({formSubmitState: 'sending'}) //set form submission state
+        // await this.setState({formSubmitState: 'sending'}) //set form submission state
         
-        return fetch('api/send-message', {                //send fetch request
-            method: "POST", // *GET, POST, PUT, DELETE, etc.
-            mode: "cors", // no-cors, cors, *same-origin
-            cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-            credentials: "same-origin", // include, *same-origin, omit
-            headers: {
-                "Content-Type": "application/json",
-                // "Content-Type": "application/x-www-form-urlencoded",
-            },
-            redirect: "follow", // manual, *follow, error
-            referrer: "no-referrer", // no-referrer, *client
-            body: JSON.stringify(messageDetails), // body data type must match "Content-Type" header
-        }).then(response => response.json()) //convert response to json
+        //  Mailer.sendmail(messageDetails)
+        // .then(res => {
+        //     console.log(res.response)
+        //     this.setState({formSubmitState:'sent', sentOnce: true})
+        // })
+        // .catch(err =>{
+        //     this.setState({formSubmitState:'error'});
+        // })
 
-        .then((response)=>{ 
-            response? this.setState({formSubmitState:'sent', sentOnce: true}) //set form submission state
-            :this.setState({formSubmitState:'error'});
+        // return fetch('api/send-message', {                //send fetch request
+        //     method: "POST", // *GET, POST, PUT, DELETE, etc.
+        //     mode: "cors", // no-cors, cors, *same-origin
+        //     cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+        //     credentials: "same-origin", // include, *same-origin, omit
+        //     headers: {
+        //         "Content-Type": "application/json",
+        //         // "Content-Type": "application/x-www-form-urlencoded",
+        //     },
+        //     redirect: "follow", // manual, *follow, error
+        //     referrer: "no-referrer", // no-referrer, *client
+        //     body: JSON.stringify(messageDetails), // body data type must match "Content-Type" header
+        // }).then(response => response.json()) //convert response to json
+
+        // .then((response)=>{ 
+        //     response? this.setState({formSubmitState:'sent', sentOnce: true}) //set form submission state
+        //     :this.setState({formSubmitState:'error'});
            
-        })
+        // })
 
-        .catch((err)=>this.setState({formSubmitState:'error'})) //set form submission state
+        // .catch((err)=>this.setState({formSubmitState:'error'})) //set form submission state
        
     }
 
@@ -607,10 +615,14 @@ class ContactForm extends Component{
  render(){
      return(
          <div className='contact-form-cont' style={{display: this.props.showContactForm? 'flex': 'none'}} >
-        <form className="contact-form">
+        <form 
+        action="https://formspree.io/gbareoyekan@yahoo.com"
+        method="POST"
+        ref = {(ref)=>this.contactForm = ref}
+        className="contact-form">
             <div className="form-group">
             <label for="inputName">Name</label>
-            <input type="text" className="form-control" id="inputName" placeholder="Your Name" onChange={(event)=>{this._setInputValue('name',event.target.value); }}/>
+            <input type="text" className="form-control" name='name' id="inputName" placeholder="Your Name" onChange={(event)=>{this._setInputValue('name',event.target.value); }}/>
             <div class="valid-feedback">
                 Looks good!
             </div>
@@ -622,7 +634,7 @@ class ContactForm extends Component{
         
             <div className="form-group">
             <label for="inputEmail">Email</label>
-            <input type="email" className="form-control" id="inputEmail" placeholder="Your Email" onChange={(event)=>{this._setInputValue('email',event.target.value); }} />
+            <input type="email" className="form-control"  name='email' id="inputEmail" placeholder="Your Email" onChange={(event)=>{this._setInputValue('email',event.target.value); }} />
         `   <div class="valid-feedback">
                 Looks good!
             </div>
@@ -634,7 +646,7 @@ class ContactForm extends Component{
         
             <div className="form-group ">
             <label for="inputPhone">Phone No</label>
-            <input type="text" className="form-control" id="inputPhone" placeholder="Your Phone" onChange={(event)=>{this._setInputValue('phone',event.target.value); }} />
+            <input type="text" className="form-control" name = 'phone'id="inputPhone" placeholder="Your Phone" onChange={(event)=>{this._setInputValue('phone',event.target.value); }} />
             <div class="valid-feedback">
                 Looks good!
             </div>
@@ -646,7 +658,7 @@ class ContactForm extends Component{
         
             <div className="form-group ">
             <label for="contactMessage">Message</label>
-            <textarea className="form-control" id="contactMessage" rows="6" placeholder='Leave a message here' onChange={(event)=>{this._setInputValue('message',event.target.value); }}></textarea>
+            <textarea className="form-control" id="contactMessage" name ='message' rows="6" placeholder='Leave a message here' onChange={(event)=>{this._setInputValue('message',event.target.value); }}></textarea>
             <div class="valid-feedback">
                 Looks good!
             </div>
